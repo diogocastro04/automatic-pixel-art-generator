@@ -10,6 +10,8 @@ Automatic pixel generator is a python program for automatically generating some 
 
 Currently to change any options you need to alter the code.
 
+ScreenShots
+
 = Future Features =
 
   * GUI and command line interface
