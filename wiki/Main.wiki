@@ -1,0 +1,26 @@
+#Overview
+
+= Introduction =
+
+Automatic pixel generator is a python program for automatically generating some types of pixel art.
+
+= Current Features =
+
+  * Generate spaceships
+
+Currently to change any options you need to alter the code.
+
+= Future Features =
+
+  * GUI and command line interface
+  * More options, colouring, size
+  * Planets, People
+  * Tilesets, paths, grass, trees, walls etc
+
+= Language and Libraries =
+
+Python, Pygame
+
+= License =
+
+Free BSD
