@@ -26,3 +26,18 @@ Python, Pygame
 = License =
 
 Free BSD
+
+= Installation and Usage =
+
+Currently the project is in a messy state and the only way to download it is via subversion from the repository. Instructions for subversion access are in the source tab above.
+
+Once downloaded you can run 
+{{{
+python proc_pixels.py
+}}}
+From within the 
+{{{
+automatic-pixel-art-generator
+}}}
+directory
+It uses the key .png files to create the images. And outputs the result in a output.png file.
