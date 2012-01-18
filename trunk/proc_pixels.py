@@ -8,7 +8,7 @@ Spaceship generator
 
 Part of the Automatic Pixel Art Generator or APAG
 
-Version 0.0.2 as of 18 January 2012
+Version 0.0.3 as of 19 January 2012
 
 """
 
@@ -16,6 +16,7 @@ class SpaceShipGenerator():
 
 	def __init__(self):	
 		pass
+
 	
 	def proc_gen(self, key_surface):
 		"""
@@ -28,28 +29,35 @@ class SpaceShipGenerator():
 		output_surface = pygame.Surface((width, height))
 		key_array = pygame.PixelArray(key_surface)
 		output_array = pygame.PixelArray(output_surface)
+		
+		WHITE = key_surface.map_rgb ((255, 255, 255))
+		RED = key_surface.map_rgb ((255, 0, 0))
+		GREEN = key_surface.map_rgb ((0, 255, 0))
+		BLUE = key_surface.map_rgb ((0, 0, 255))
+		BLACK = key_surface.map_rgb ((0, 0, 0))
+		
 		for row in range(0, height):
 			for col in range(0, width):
-				pixel = (0, 0, 0)
+				pixel = BLACK
 				# White
-				if key_array[col][row] == key_surface.map_rgb ((255, 255, 255)):
+				if key_array[col][row] == WHITE:
 					#100%
-					pixel = (255, 255, 255)
+					pixel = WHITE
 				# Green
-				elif key_array[col][row] == key_surface.map_rgb ((0, 255, 0)):
+				elif key_array[col][row] == GREEN:
 					r = randint(0, 3) # 75%
 					if r in (0, 1, 2) :
-						pixel = (0, 255, 0)
+						pixel = GREEN
 				# Red
-				elif key_array[col][row] == key_surface.map_rgb ((255, 0, 0)):
+				elif key_array[col][row] == RED:
 					r = randint(0, 3) # 50%
 					if r in (0, 1) :
-						pixel = (255, 0, 0)
+						pixel = RED
 				# Blue
-				elif key_array[col][row] == key_surface.map_rgb ((0, 0, 255)):
+				elif key_array[col][row] == BLUE:
 					r = randint(0, 3) # 25%
 					if r == 0 :
-						pixel = (0, 0, 255)
+						pixel = BLUE
 				output_array[col][row] = pixel
 	
 		# copy pixel array to surface and delete pixel arrays
@@ -71,7 +79,7 @@ class SpaceShipGenerator():
 	
 		count = 0
 		if row > 1 and col > 1:
-			if input_array[col-1][row-1] == BLACK: count += 1
+			if input_array[col-1][row-1] == BLACK: count += 1 
 		else: count += 1
 		if row > 1:
 			if input_array[col][row-1] == BLACK: count += 1
@@ -146,7 +154,7 @@ class SpaceShipGenerator():
 			# Remove coloured pixels without enough surrounding coloured pixels
 			for row in range(0, height):
 				for col in range(0, width):
-					if input_array[col][row] is not BLACK:
+					if input_array[col][row] != BLACK:
 						count = self.get_count_of_surrounding_black_pixels(input_array, row, col, width, height, BLACK)
 						
 						if count > 5:
@@ -210,6 +218,7 @@ class SpaceShipGenerator():
 	
 		BLACK = input_surface.map_rgb ((0, 0, 0))
 		WHITE = input_surface.map_rgb ((255, 255, 255))	
+		PINK = input_surface.map_rgb ((255, 0, 255))
 		# Add an outer skin and convert remaining black pixels to white
 	
 		for row in range(0, height):
@@ -218,12 +227,11 @@ class SpaceShipGenerator():
 					count = self.get_count_of_surrounding_non_black_pixels(input_array, row, col, width, height, BLACK)
 					
 					if count > 0:
-						output_array[col][row] = pygame.color.Color('black')
+						output_array[col][row] = PINK
 					else:
-						output_array[col][row] = pygame.color.Color('white')
+						output_array[col][row] = input_array[col][row]
+						
 				
-				elif input_array[col][row] == WHITE:
-					output_array[col][row] = pygame.color.Color('black')	
 				else:
 					output_array[col][row] = input_array[col][row] 
 		# copy pixel array to surface and delete pixel arrays
@@ -250,6 +258,7 @@ class SpaceShipGenerator():
 		RED = input_surface.map_rgb ((255, 0, 0))
 		BLUE = input_surface.map_rgb ((0, 0, 255))
 		WHITE = input_surface.map_rgb ((255, 255, 255))
+		PINK = input_surface.map_rgb ((255, 0, 255))
 		
 		colour1 = None
 		
@@ -294,6 +303,11 @@ class SpaceShipGenerator():
 					output_array[col][row] = BLACK	
 				elif input_array[col][row] == BLACK:
 					output_array[col][row] = WHITE	
+				elif input_array[col][row] == PINK:
+					output_array[col][row] = BLACK	
+				
+				else:
+					output_array[col][row] = input_array[col][row]
 		
 		
 		
