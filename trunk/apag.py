@@ -7,12 +7,12 @@ A set of functions to autmatically create pixel art for games.
 __author__ = "Richard James"
 __copyright__ = "Copyright 2012, Richard James"
 __license__ = "FreeBSD"
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 __maintainer__ = "Richard James"
 __email__ = "richardjam13@gmail.com"
 __status__ = "Development"
 
-import pygame, sys
+import pygame, sys, os, glob, math
 from pygame.locals import *
 from random import randint
 import copy
@@ -331,88 +331,110 @@ class SpaceShipGenerator():
         final_surface.blit(display_surface, (x, y))
         return final_surface
     
-    
+
+def load_key_image_files(mode, keys):
+        # determine names of the key files to load and them load them    
+        key_surfaces = []
+        list_of_file_names = []
+
+        for key_name in keys:
+            list_of_file_names.append(glob.glob(os.path.join(mode,key_name)))
+        
+        for file_names in list_of_file_names:
+            for file_name in file_names:
+                key_surfaces.append(pygame.image.load(file_name))
+        return key_surfaces
     
     
 def main():
     
-    parser = argparse.ArgumentParser(description='Automatic Pixel Art Generator'+__version__)
-    parser.add_argument('--mode',default="spaceship",help='one of spaceship, planet default is spaceship')
-    parser.add_argument('--format',default="sheet",help='sheet gives you an ouput filled with x*y images, hbar gives you a \
+    parser = argparse.ArgumentParser(description='Automatic Pixel Art Generator'+__version__,version=__version__)
+    parser.add_argument('--mode',default="spaceships", choices=('spaceships','planets'), help='one of (spaceships, planets). Default is spaceships')
+    parser.add_argument('--format',default="sheet", choices=('sheet','hbar','vbar','single'), help='sheet gives you an ouput filled with x*y images, hbar gives you a \
         row of images and vbar a column, single gives only a single image')
-    parser.add_argument('--format-fill-number',default = 10,help='how many copies of the image you want on the format')
-    parser.add_argument('--copies',default=1,help='')
-    parser.add_argument('--output-vertical-size',default=600,help='vertical height of a vbar or sheet format')
-    parser.add_argument('--output-horizontal-size',default=800,help='horizontal width of a hbar or sheet format')
-    parser.add_argument('--keys',default='key*.png',help='')
-    parser.add_argument('--art-horizontal-size',default=32,help='')
-    parser.add_argument('--art-vertical-size',default=32,help='')
-    parser.add_argument('--skinning',action='store_true',default=False,help='')
+    parser.add_argument('--format-use-fill-number', action='store_true', default=True, help='use a specific number of images instead of filling the whole output')
+    parser.add_argument('--format-fill-number', default=300, help='how many copies of the image you want on the format')
+    parser.add_argument('--copies', default=1, help='')
+    parser.add_argument('--output-width',default=100,help='width of a hbar or sheet format')
+    parser.add_argument('--output-height',default=127,help='height of a vbar or sheet format')
+    parser.add_argument('--keys',default=['key*.png'],nargs='+',help='')
+    parser.add_argument('--art-width',default=32,help='')
+    parser.add_argument('--art-height',default=32,help='')
+    parser.add_argument('--skin',action='store_true',default=False,help='')
     parser.add_argument('--post-colouring',action='store_true',default=False,help='')
-    parser.add_argument('--backround-colour',default='(255,255,255)',help='')
-    parser.add_argument('--skinning-colour',default='(0, 0, 0)',help='')
+    parser.add_argument('--backround-colour',nargs=3,help='The background colour for colouring in the format RED GREEN BLUE')
+    parser.add_argument('--skin-colour',nargs=3,help='The skin colour for colouring in the format RED GREEN BLUE')
+    
     args = parser.parse_args()
     print (args)
     pygame.init()
     
+    if args.format == "sheet":    
+        key_surfaces = load_key_image_files(args.mode, args.keys)
+        
+        # create the output sheet
+        if not args.format_use_fill_number:
+            sheet_width = args.output_width
+            sheet_height = args.output_height
+        else:
+            square = int(math.ceil(math.sqrt(args.format_fill_number)))
+            sheet_width =  square * args.art_width
+            sheet_height = square * args.art_height
+
+        final_surface = pygame.Surface((sheet_width, sheet_height))
+        final_surface.fill(pygame.color.Color('white'))
+
+        # calculate number of images to generate
+        columns = sheet_width / args.art_width
+        rows = sheet_height / args.art_height
+        # 800 * 600 fits 18 * 25 (32*32) images on a sheet
+        count = 1
+        if not args.format_use_fill_number:
+            total = rows * columns
+        else:
+            total = args.format_fill_number
+        total = total * 1.0
+        
+        # values for random number generation
+        previous = 0
+        r = 0
+        
+        # create multiple images
+        for y in range(0, rows):
+            for x in range(0, columns):
+                if args.format_use_fill_number and count > args.format_fill_number:
+                    break
+
+                spaceship = SpaceShipGenerator()
+
+                print ("generating image %s of %s | %.2f%%" % (count, total, (count / total) * 100) )
+
+                count += 1
+
+                while (r == previous and len(key_surfaces) > 1):
+                    r = randint(0, len(key_surfaces)-1)
+                display_surface = spaceship.proc_gen(key_surfaces[r])
+                previous = r
+                display_surface = spaceship.clean_pixels(display_surface)
+                if args.skin:
+                    display_surface = spaceship.skin_image(display_surface)
+        
+                if args.post_colouring:
+                    display_surface = spaceship.colour_pixels(display_surface)
+                display_surface = spaceship.mirror_image_left_to_right(display_surface)
+                final_surface = spaceship.paste_onto_final(display_surface, final_surface, x*32, y*32)
+            if args.format_use_fill_number and count > args.format_fill_number:
+                break
+        
+        pygame.image.save(final_surface, "output.png")
+    elif args.format == "hbar":
+        pass
+    elif args.format == "vbar":
+        pass
+    elif args.format == "single":
+        pass
     
     
-    # optional flags
-    mode = "spaceship"
-    format = "sheet"
-    format_fill_number = "108"
-    copies =  1
-    output_horizontal_size = "800"
-    output_vertical_size = "600"
-    keys = ['key*.png']
-    art_horizontal_size = 32
-    art_vertical_size = 32
-    #skinning = True
-    #coloured = True
-    background_colour = pygame.color.Color('white')
-    skinning_colour = pygame.color.Color('black')
-    
-    key_surface = []
-    for num in range(7):
-        file_name = "key" + str(num+1) + ".png"
-        key_surface.append(pygame.image.load(file_name))
-    
-    final_surface = pygame.Surface((800, 600))
-    final_surface.fill(pygame.color.Color('white'))
-    
-    # calculate number of images to generate
-    rows = 12
-    columns = 9
-    # 800 * 600 fits 18 * 25 (32*32) images on a sheet
-    count = 1
-    total = rows * columns
-    total = total * 1.0
-    
-    # values for random number generation
-    previous = 0
-    r = 0
-    
-    # create multiple images
-    for y in range(0,columns):
-        for x in range(0,rows):
-            spaceship = SpaceShipGenerator()
-            percent = (count / total) * 100
-            #print ("generating image %s of %s | %.2f%%" % (count, total, percent) )
-            count += 1
-            while (r == previous):
-                r = randint(0, 3)
-            display_surface = spaceship.proc_gen(key_surface[6])
-            previous = r
-            display_surface = spaceship.clean_pixels(display_surface)
-            if args.skinning:
-                display_surface = spaceship.skin_image(display_surface)
-    
-            if args.post_colouring:
-                display_surface = spaceship.colour_pixels(display_surface)
-            display_surface = spaceship.mirror_image_left_to_right(display_surface)
-            final_surface = spaceship.paste_onto_final(display_surface, final_surface, x*32, y*32)
-    
-    pygame.image.save(final_surface, "output.png")
     
 if __name__ == '__main__':
     from timeit import Timer
