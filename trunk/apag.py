@@ -559,14 +559,14 @@ def main():
     
     ######################################
     # Override args for testing purposes
-    args.format = 'sheet'
-    args.format_use_fill_number = True
-    args.format_fill_number = 128
-    args.copies = 1
+    #args.format = 'sheet'
+    #args.format_use_fill_number = True
+    #args.format_fill_number = 128
+    #args.copies = 1
     
     # Finish args override
     
-    print (args)
+    #print (args)
     ######################################
 
     pygame.init()
