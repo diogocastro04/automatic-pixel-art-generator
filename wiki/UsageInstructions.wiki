@@ -1,0 +1,12 @@
+#summary Usage Instructions
+
+Once downloaded you can run 
+{{{
+python apag.py
+}}}
+From within the 
+{{{
+automatic-pixel-art-generator
+}}}
+directory
+It uses the key .png files to create the images. And outputs the result in a output.png file.
