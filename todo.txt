@@ -1,0 +1,36 @@
+=== In Version 0.0.5
+add support for format_fill_number
+Add support for single image output
+move spaceship key images to sub directory
+add support for selecting key images
+alter format_fill_number to create the sheet size needed for the number of images 
+
+=== In version 0.0.6
+
+add support for single image output
+add support for vbar and hbar output
+add support for multiple copies output
+add support for colouring colour options
+Removed gradient options
+
+=== Aimed for version 0.0.7
+
+refactor to remove duplicate code and for easier human parsing
+basic error checking
+
+
+=== future versions
+
+support for different key image sizes
+support for scaling images up/down
+support for different texturing of images
+support for different gradients
+support for planets
+
+support for characters
+GUI support
+Source Package
+Packages for Linux
+Packages for Windows
+output preview support
+
