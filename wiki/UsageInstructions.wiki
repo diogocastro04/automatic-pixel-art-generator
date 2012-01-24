@@ -109,17 +109,36 @@ After generating the image it tries to add a 1 pixel thick skin around the edge 
                         gives only a single image. Default is sheet
 }}}
 
+||http://www.users.on.net/~richardjam13/apag-sheet-default.png||
+||sheet format||
+||http://www.users.on.net/~richardjam13/apag-hbar-default.png||
+||hbar format||
+||http://www.users.on.net/~richardjam13/apag-vbar-default.png||
+||vbar format||
+||http://www.users.on.net/~richardjam13/apag-single-default.png||
+||single format||
+
+
 === format fill number ===
 {{{
   --format-use-fill-number
                         use a specific number of images instead of filling the
                         whole output. Default is don't do that
 }}}
+
+Normally the program tries to fill in the format with as many images that will fit in the height and/or width supplied. If however you want to generate a specific number of images without specifying the height and/or width. You can use this option to generate as many or as little images as you want and the program will calculate the size of the output need for you.
+
 {{{
   --format-fill-number FORMAT_FILL_NUMBER
                         how many copies of the image you want on the format.
                         Default is 10
 }}}
+
+{{{
+python apag.py --format-use-fill-number --format-fill-number 100
+}}}
+
+Generates 100 images in default sheet format.
 
 === copies ===
 {{{
@@ -180,6 +199,12 @@ These set the colour values for the colouring mode to use. If they are not set i
 
 The values are in the range 0-255 and a set of triplet values is required for the red green blue. Later alpha values will also be included requiring a quadruplet of values.
 
+||http://www.users.on.net/~richardjam13/apag-sheet-default.png||
+||Example With Default Colouring||
+
 {{{
 python apag.py --background-colour 255 255 255 --skin-colour 0 0 0 --green-colour 255 165 0 --skin --blue-colour 139 90 43
 }}}
+
+||http://www.users.on.net/~richardjam13/apag-sheet1.png||
+||Example of output with colours as used above||
