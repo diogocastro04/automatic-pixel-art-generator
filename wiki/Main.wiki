@@ -4,7 +4,7 @@
 
 Automatic pixel generator is a python program for automatically generating some types of pixel art.
 
-== Current version is 0.0.6 ==
+== Current version is 0.0.6a ==
 
 = Current Features =
 
@@ -32,6 +32,11 @@ Free BSD
 
 = Installation and Usage =
 
-Currently the project is in a messy state and the only way to download it is via subversion from the repository. Instructions for subversion access are in the source tab above.
+Downloads can be obtained here:
+http://code.google.com/p/automatic-pixel-art-generator/downloads/list
+
+Currently only a source package is available 
+
+Or you can get latest source via subversion. Instructions for subversion access are in the source tab above.
 
 UsageInstructions
