@@ -13,6 +13,10 @@ add support for multiple copies output
 add support for colouring colour options
 Removed gradient options
 
+=== In version 0.0.6a
+
+small bug fixes
+
 === Aimed for version 0.0.7
 
 refactor to remove duplicate code and for easier human parsing
