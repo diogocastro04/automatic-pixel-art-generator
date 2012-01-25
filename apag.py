@@ -7,7 +7,7 @@ A set of functions to autmatically create pixel art for games.
 __author__ = "Richard James"
 __copyright__ = "Copyright 2012, Richard James"
 __license__ = "FreeBSD"
-__version__ = "0.0.6"
+__version__ = "0.0.6a"
 __maintainer__ = "Richard James"
 __email__ = "richardjam13@gmail.com"
 __status__ = "Development"
@@ -419,6 +419,7 @@ def generate_image_hbar(args, key_surfaces, colours):
         sheet_height = args.art_height
     else:
         sheet_width =  args.format_fill_number * args.art_width
+        
         sheet_height = args.art_height
 
     final_surface = pygame.Surface((sheet_width, sheet_height))
@@ -507,13 +508,13 @@ def add_output_format_options(parser):
         single gives only a single image. Default is sheet')
     parser.add_argument('--format-use-fill-number', action='store_true', default=False, \
         help="use a specific number of images instead of filling the whole output. Default is don't do that")
-    parser.add_argument('--format-fill-number', default=10, \
+    parser.add_argument('--format-fill-number', default=10, type=int, \
         help='how many copies of the image you want on the format. Default is 10')
-    parser.add_argument('--copies', default=1, \
+    parser.add_argument('--copies', default=1, type=int, \
         help='Output n sets of the output, i.e. n sheets or n single images. Default is 1 set')
-    parser.add_argument('--output-width',default=100, \
+    parser.add_argument('--output-width',default=100, type=int, \
         help='width of a hbar or sheet format. Default is 100 pixels')
-    parser.add_argument('--output-height',default=300, \
+    parser.add_argument('--output-height',default=300, type=int, \
         help='height of a vbar or sheet format. Default is 300 pixels')
     
     return parser
@@ -545,9 +546,9 @@ def main():
     parser.add_argument('--mode', default="spaceships", choices=('spaceships','planets'), help='one of (spaceships, planets). Default is spaceships')
     parser.add_argument('--keys', default=['key*.png'], nargs='+', \
         help="Names of the files to use as image keys. Default is 'key*.png'")
-    parser.add_argument('--art-width', default=32, \
+    parser.add_argument('--art-width', default=32, type=int, \
         help='in pixels the input width of the art. Default is 32 pixels')
-    parser.add_argument('--art-height', default=32, \
+    parser.add_argument('--art-height', default=32, type=int, \
         help='in pixels the input height of the art. Default is 32 pixels')
     parser.add_argument('--skin', action='store_true', default=False, \
         help="Add a 1 pixel skin to the output. Default is don't add a skin")
@@ -566,7 +567,7 @@ def main():
     
     # Finish args override
     
-    #print (args)
+    print (args)
     ######################################
 
     pygame.init()
