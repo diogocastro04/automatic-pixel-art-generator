@@ -17,7 +17,7 @@ ScreenShots
 
 = Future Features =
 
-  * GUI line interface
+  * GUI interface
   * More options, advanced colouring, gradients, scaling, rotation
   * Planets, People
   * Tilesets, paths, grass, trees, walls etc
